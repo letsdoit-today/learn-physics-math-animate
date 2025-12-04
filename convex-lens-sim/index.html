@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>凸透镜成像交互演示</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入 Snap.svg -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>凸透镜成像规律演示</h1>
+            <p class="subtitle">演示物体从2倍焦距外移动到1倍焦距内的成像变化</p>
+        </header>
+
+        <div class="canvas-wrapper">
+            <svg id="svg-canvas" viewBox="0 0 800 500"></svg>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <button id="btn-play" class="btn primary">开始演示</button>
+                <button id="btn-pause" class="btn secondary">暂停</button>
+                <button id="btn-reset" class="btn warning">重置</button>
+            </div>
+            
+            <div class="slider-group">
+                <label for="slider-u">物距 (u): <span id="val-u">300</span></label>
+                <!-- 范围说明: 焦距设为100px。我们让物体从 350 (2F外) 移动到 30 (F内) -->
+                <input type="range" id="slider-u" min="30" max="350" value="300" step="1">
+            </div>
+        </div>
+
+        <div class="data-panel">
+            <div class="data-item">
+                <span class="label">焦距 (f)</span>
+                <span class="value" id="data-f">100</span>
+            </div>
+            <div class="data-item">
+                <span class="label">物距 (u)</span>
+                <span class="value" id="data-u">300</span>
+            </div>
+            <div class="data-item">
+                <span class="label">像距 (v)</span>
+                <span class="value" id="data-v">150</span>
+            </div>
+            <div class="data-item">
+                <span class="label">放大倍数 (M)</span>
+                <span class="value" id="data-m">-0.5</span>
+            </div>
+            <div class="data-item status">
+                <span class="label">成像性质</span>
+                <span class="value" id="data-type">倒立 缩小 实像</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
