@@ -1,0 +1,84 @@
+<main class="demo-container">
+    <h1>
+        <%= title %>
+    </h1>
+    <div class="demo-description">
+        <p>
+            <%= description %>
+        </p>
+    </div>
+
+    <div class="demo-content">
+        <div class="canvas-container">
+            <svg id="sim-svg" viewBox="0 0 800 500"></svg>
+            <div class="overlay-info">
+                <div class="force-legend">
+                    <span class="legend-item"><span class="color-box" style="background: #e74c3c;"></span><span
+                            data-i18n="legend-g">重力 G</span></span>
+                    <span class="legend-item"><span class="color-box" style="background: #2ecc71;"></span><span
+                            data-i18n="legend-n">支持力 N</span></span>
+                    <span class="legend-item"><span class="color-box" style="background: #3498db;"></span><span
+                            data-i18n="legend-f">摩擦力 f</span></span>
+                    <span class="legend-item"><span class="color-box" style="background: #9b59b6;"></span><span
+                            data-i18n="legend-gx">下滑分力 Gx</span></span>
+                </div>
+            </div>
+        </div>
+
+        <aside class="demo-controls">
+            <div class="control-group">
+                <h3 data-i18n="control-title">实验控制</h3>
+                <div class="buttons">
+                    <button id="btn-start" data-i18n="btn-start">开始抬升</button>
+                    <button id="btn-pause" data-i18n="btn-pause">暂停</button>
+                    <button id="btn-reset" data-i18n="btn-reset">重置</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3 data-i18n="params-title">参数设置</h3>
+                <label for="mu-slider" id="mu-label">摩擦系数 (μ): <span id="mu-val">0.50</span></label>
+                <input type="range" id="mu-slider" min="0.1" max="1.0" step="0.05" value="0.5">
+            </div>
+
+            <div class="control-group">
+                <h3 data-i18n="data-title">实时数据</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-angle">倾角 θ:</span>
+                        <span class="value" id="val-angle">0.0°</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-g">重力 G:</span>
+                        <span class="value" id="val-g">10.0 N</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-n">支持力 N:</span>
+                        <span class="value" id="val-n">10.0 N</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-gx">下滑分力 Gx:</span>
+                        <span class="value" id="val-gx">0.0 N</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-fmax">最大静摩擦:</span>
+                        <span class="value" id="val-fmax">5.0 N</span>
+                    </div>
+                    <div class="data-item highlight">
+                        <span class="label" data-i18n="label-f">实际摩擦力 f:</span>
+                        <span class="value" id="val-f">0.0 N</span>
+                    </div>
+                </div>
+                <div id="status-msg" class="status-normal" data-i18n="status-rest">静止状态</div>
+            </div>
+        </aside>
+
+    </div>
+    <div class="demo-explanation">
+        <h2>原理解释</h2>
+        <p>
+            <%= explanation %>
+        </p>
+    </div>
+
+</main>

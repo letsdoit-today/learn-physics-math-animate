@@ -1,0 +1,13 @@
+<div class="breadcrumb">
+  <ol class="breadcrumb-list">
+    <% breadcrumb.forEach(function(item, index) { %>
+      <li class="breadcrumb-item">
+        <% if (item.url && index < breadcrumb.length - 1) { %>
+          <a href="<%= item.url %>"><%= item.title %></a>
+        <% } else { %>
+          <span class="current"><%= item.title %></span>
+        <% } %>
+      </li>
+    <% }); %>
+  </ol>
+</div>

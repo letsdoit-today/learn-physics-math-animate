@@ -1,0 +1,55 @@
+{
+  "items": [
+    {
+      "title": "力学",
+      "url": "/mechanics",
+      "active": false,
+      "subitems": [
+        {
+          "title": "斜面摩擦力",
+          "url": "/mechanics/friction-inclined-plane",
+          "active": false
+        },
+        {
+          "title": "金属球落水受力",
+          "url": "/mechanics/falling-ball-in-water",
+          "active": false
+        }
+      ]
+    },
+    {
+      "title": "光学",
+      "url": "/optics",
+      "active": false,
+      "subitems": [
+        {
+          "title": "凸透镜成像",
+          "url": "/optics/convex-lens",
+          "active": false
+        },
+        {
+          "title": "凹透镜成像",
+          "url": "/optics/concave-lens",
+          "active": false
+        },
+        {
+          "title": "水的折射",
+          "url": "/optics/air-water-refraction",
+          "active": false
+        }
+      ]
+    },
+    {
+      "title": "电磁学",
+      "url": "/electromagnetism",
+      "active": false,
+      "subitems": []
+    },
+    {
+      "title": "热学",
+      "url": "/thermodynamics",
+      "active": false,
+      "subitems": []
+    }
+  ]
+}

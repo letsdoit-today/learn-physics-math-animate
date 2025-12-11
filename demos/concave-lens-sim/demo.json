@@ -1,0 +1,16 @@
+{
+  "title": "凹透镜成像规律演示",
+  "url": "/optics/concave-lens",
+  "description": "演示物体从2倍焦距外移动到1倍焦距内的成像变化",
+  "explanation": "凹透镜对光线有发散作用，无论物体放在凹透镜前的什么位置，凹透镜都成正立、缩小的虚像。虚像位于透镜同侧，且像距小于焦距。",
+  "category": "optics",
+  "tags": [
+    "凹透镜",
+    "光学",
+    "成像",
+    "物理实验"
+  ],
+  "dependencies": [
+    "snap.svg"
+  ]
+}

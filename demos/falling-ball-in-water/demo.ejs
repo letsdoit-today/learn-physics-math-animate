@@ -1,0 +1,84 @@
+<main class="demo-container">
+    <h1><%= title %></h1>
+    <div class="demo-description">
+        <p><%= description %></p>
+    </div>
+
+    <div class="demo-content">
+        <div class="canvas-container">
+            <svg id="sim-svg" viewBox="0 0 800 500"></svg>
+            <div class="overlay-info">
+                <div class="force-legend">
+                    <span class="legend-item"><span class="color-box" style="background: #e74c3c;"></span><span data-i18n="legend-g">重力 G</span></span>
+                    <span class="legend-item"><span class="color-box" style="background: #3498db;"></span><span data-i18n="legend-f_b">浮力 F_b</span></span>
+                    <span class="legend-item"><span class="color-box" style="background: #f1c40f;"></span><span data-i18n="legend-f_d">阻力 F_d</span></span>
+                    <span class="legend-item"><span class="color-box" style="background: #9b59b6;"></span><span data-i18n="legend-n">支持力 N</span></span>
+                    <span class="legend-item"><span class="color-box" style="background: #2ecc71;"></span><span data-i18n="legend-f_net">净力 F_net</span></span>
+                </div>
+            </div>
+        </div>
+
+        <aside class="demo-controls">
+            <div class="control-group">
+                <h3 data-i18n="control-title">实验控制</h3>
+                <div class="buttons">
+                    <button id="btn-start" data-i18n="btn-start">开始释放</button>
+                    <button id="btn-pause" data-i18n="btn-pause">暂停</button>
+                    <button id="btn-reset" data-i18n="btn-reset">重置</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3 data-i18n="params-title">参数设置</h3>
+                <label for="density-slider">液体密度 (ρ): <span id="density-val">1000</span> kg/m³</label>
+                <input type="range" id="density-slider" min="800" max="1200" step="50" value="1000">
+                
+                <label for="radius-slider">球半径 (r): <span id="radius-val">0.1</span> m</label>
+                <input type="range" id="radius-slider" min="0.05" max="0.2" step="0.01" value="0.1">
+
+                <label for="time-slider">时间 (t): <span id="time-val">0.00</span> s</label>
+                <input type="range" id="time-slider" min="0" max="1" step="0.001" value="0">
+            </div>
+
+            <div class="control-group">
+                <h3 data-i18n="data-title">实时数据</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <span class="label">高度 h:</span>
+                        <span class="value" id="val-h">0.00 m</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">速度 v:</span>
+                        <span class="value" id="val-v">0.00 m/s</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">重力 G:</span>
+                        <span class="value" id="val-g">0.00 N</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">浮力 Fb:</span>
+                        <span class="value" id="val-fb">0.00 N</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">阻力 Fd:</span>
+                        <span class="value" id="val-fd">0.00 N</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label">支持力 N:</span>
+                        <span class="value" id="val-n">0.00 N</span>
+                    </div>
+                    <div class="data-item highlight">
+                        <span class="label">净力 Fnet:</span>
+                        <span class="value" id="val-fnet">0.00 N</span>
+                    </div>
+                </div>
+                <div id="status-msg" class="status-normal">准备就绪</div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="demo-explanation">
+        <h2>原理解释</h2>
+        <p><%= explanation %></p>
+    </div>
+</main>

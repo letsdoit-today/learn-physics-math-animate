@@ -20,6 +20,9 @@ let state = {
     animationSpeed: 0.5 // pixels per frame
 };
 
+// 暴露到全局作用域，供HTML中的语言切换使用
+window.state = state;
+
 // Snap Elements
 let s;
 let els = {
@@ -35,7 +38,7 @@ let els = {
 };
 
 // Initialization
-window.onload = function() {
+window.onload = function () {
     s = Snap(CONFIG.svgId);
     initStaticElements();
     initDynamicElements();
@@ -46,24 +49,24 @@ window.onload = function() {
 function initStaticElements() {
     // 1. Optical Axis
     s.line(
-        CONFIG.centerX - CONFIG.axisLength/2, CONFIG.centerY,
-        CONFIG.centerX + CONFIG.axisLength/2, CONFIG.centerY
+        CONFIG.centerX - CONFIG.axisLength / 2, CONFIG.centerY,
+        CONFIG.centerX + CONFIG.axisLength / 2, CONFIG.centerY
     ).attr({ class: "axis" });
 
     // 2. Lens (Simple representation: Ellipse)
-    s.ellipse(CONFIG.centerX, CONFIG.centerY, CONFIG.lensWidth/2, CONFIG.lensHeight/2)
-     .attr({ class: "lens-shape" });
-    
+    s.ellipse(CONFIG.centerX, CONFIG.centerY, CONFIG.lensWidth / 2, CONFIG.lensHeight / 2)
+        .attr({ class: "lens-shape" });
+
     // Lens vertical bisector (optional, for ray tracing visual aid)
-    s.line(CONFIG.centerX, CONFIG.centerY - CONFIG.lensHeight/2, CONFIG.centerX, CONFIG.centerY + CONFIG.lensHeight/2)
-     .attr({ stroke: "#3498db", strokeWidth: 1, strokeDasharray: "2,2", opacity: 0.5 });
+    s.line(CONFIG.centerX, CONFIG.centerY - CONFIG.lensHeight / 2, CONFIG.centerX, CONFIG.centerY + CONFIG.lensHeight / 2)
+        .attr({ stroke: "#3498db", strokeWidth: 1, strokeDasharray: "2,2", opacity: 0.5 });
 
     // 3. Points (F, 2F)
     const points = [
         { x: CONFIG.centerX - CONFIG.f, label: "F" },
-        { x: CONFIG.centerX - 2*CONFIG.f, label: "2F" },
+        { x: CONFIG.centerX - 2 * CONFIG.f, label: "2F" },
         { x: CONFIG.centerX + CONFIG.f, label: "F'" },
-        { x: CONFIG.centerX + 2*CONFIG.f, label: "2F'" },
+        { x: CONFIG.centerX + 2 * CONFIG.f, label: "2F'" },
         { x: CONFIG.centerX, label: "O", offset: 15 }
     ];
 
@@ -76,7 +79,7 @@ function initStaticElements() {
 function initDynamicElements() {
     // Object Arrow (Blue)
     els.objectArrow = createArrow("#2980b9");
-    
+
     // Image Arrow (Red)
     els.imageArrow = createArrow("#e74c3c");
 
@@ -102,28 +105,47 @@ function createArrow(color) {
 // Physics Core
 function calculatePhysics(u) {
     const f = CONFIG.f;
-    
+
     // Avoid division by zero at u = f
     // In simulation, we cap u slightly away from f if needed, or handle Infinity
     if (Math.abs(u - f) < 0.1) {
-        return { v: Infinity, m: Infinity, type: "Parallel" };
+        return { v: Infinity, m: Infinity, typeKey: "image-type-parallel" };
     }
 
     // Lens Formula: 1/f = 1/u + 1/v  =>  1/v = 1/f - 1/u  => v = (uf) / (u - f)
     const v = (u * f) / (u - f);
     const m = -v / u; // Magnification
 
-    // Determine type
-    let type = "";
-    if (u > f) {
-        type = "倒立 ";
-        type += Math.abs(m) > 1 ? "放大 " : (Math.abs(m) < 1 ? "缩小 " : "等大 ");
-        type += "实像";
+    // Determine type - 使用标识符而不是硬编码文本
+    let typeKey = "";
+    if (Math.abs(u - f) < 0.1) {
+        typeKey = "image-type-parallel";
+    } else if (u > f) {
+        // Real image
+        if (Math.abs(m) > 1) {
+            typeKey = "image-type-inverted-enlarged-real";
+        } else if (Math.abs(m) < 1) {
+            typeKey = "image-type-inverted-reduced-real";
+        } else {
+            typeKey = "image-type-inverted-same-real";
+        }
     } else {
-        type = "正立 放大 虚像";
+        // Virtual image
+        typeKey = "image-type-upright-enlarged-virtual";
     }
 
-    return { v, m, type };
+    return { v, m, typeKey };
+}
+
+function getImageTypeText(typeKey) {
+    const types = {
+        'image-type-inverted-enlarged-real': '倒立 放大 实像',
+        'image-type-inverted-reduced-real': '倒立 缩小 实像',
+        'image-type-inverted-same-real': '倒立 等大 实像',
+        'image-type-upright-enlarged-virtual': '正立 放大 虚像',
+        'image-type-parallel': '平行'
+    }
+    return types[typeKey] || typeKey;
 }
 
 function updateScene(u) {
@@ -139,7 +161,9 @@ function updateScene(u) {
     document.getElementById('data-u').textContent = Math.round(u);
     document.getElementById('data-v').textContent = Math.abs(phys.v) === Infinity ? "∞" : Math.round(phys.v);
     document.getElementById('data-m').textContent = Math.abs(phys.m) === Infinity ? "∞" : phys.m.toFixed(2);
-    document.getElementById('data-type').textContent = phys.type;
+    // 使用全局函数获取翻译文本
+    const typeText = getImageTypeText ? getImageTypeText(phys.typeKey) : phys.typeKey;
+    document.getElementById('data-type').textContent = typeText;
 
     // Coordinate Mapping
     // Object X (Left of lens is negative in SVG relative to center? No, let's use absolute)
@@ -152,7 +176,7 @@ function updateScene(u) {
     // If v is positive (Real), it's at 400 + v.
     // If v is negative (Virtual), it's at 400 + v (which is left of lens).
     const imgX = CONFIG.centerX + phys.v;
-    
+
     // --- Draw Object ---
     // Reset transform and move
     els.objectArrow.transform(`t${objX},${objY}`);
@@ -163,38 +187,38 @@ function updateScene(u) {
         els.imageArrow.attr({ opacity: 0 });
         els.rays.virtualParallel.attr({ path: "" });
         els.rays.virtualCenter.attr({ path: "" });
-        
+
         // Just draw parallel rays exiting
         // Ray 1: ObjTop -> Lens -> Focus'
         const objTopY = objY - objH;
         const lensHitY = objTopY; // Parallel ray hits lens at same height
-        
+
         // Path: Start -> Lens -> Extend Parallel
         // Actually parallel rays meet at infinity. 
         // Ray 1 (Parallel -> Focus): Still goes through F'.
-        const ray1Path = `M${objX},${objTopY} L${CONFIG.centerX},${lensHitY} L${CONFIG.centerX + 1000},${CONFIG.centerY + (lensHitY - CONFIG.centerY) * (1 - 1000/CONFIG.f)}`; 
+        const ray1Path = `M${objX},${objTopY} L${CONFIG.centerX},${lensHitY} L${CONFIG.centerX + 1000},${CONFIG.centerY + (lensHitY - CONFIG.centerY) * (1 - 1000 / CONFIG.f)}`;
         // Wait, simplified: It passes through F' (400+f, 250).
         // Slope = (250 - lensHitY) / f.
         // Y at x=800: 250 + slope * (800 - (400+f))
-        
-        // Ray 2 (Center): Straight line
-        const ray2Path = `M${objX},${objTopY} L${CONFIG.centerX + 1000},${objTopY + (250-objTopY)/u * (1000+u)}`;
 
-        els.rays.parallel.attr({ path: `M${objX},${objTopY} L${CONFIG.centerX},${lensHitY} L${CONFIG.centerX+CONFIG.f},${CONFIG.centerY} l${CONFIG.f},${(CONFIG.centerY-lensHitY)}` }); // Just simplistic extension
-        els.rays.center.attr({ path: `M${objX},${objTopY} L${CONFIG.centerX+500},${CONFIG.centerY + (500/u)*objH}` });
-        
-        return; 
+        // Ray 2 (Center): Straight line
+        const ray2Path = `M${objX},${objTopY} L${CONFIG.centerX + 1000},${objTopY + (250 - objTopY) / u * (1000 + u)}`;
+
+        els.rays.parallel.attr({ path: `M${objX},${objTopY} L${CONFIG.centerX},${lensHitY} L${CONFIG.centerX + CONFIG.f},${CONFIG.centerY} l${CONFIG.f},${(CONFIG.centerY - lensHitY)}` }); // Just simplistic extension
+        els.rays.center.attr({ path: `M${objX},${objTopY} L${CONFIG.centerX + 500},${CONFIG.centerY + (500 / u) * objH}` });
+
+        return;
     }
 
     els.imageArrow.attr({ opacity: 1 });
-    
+
     // Image Transform: Translate to imgX, Scale by M
     // Note: Our arrow points UP by default (0, -60).
     // If M is negative (Real, Inverted), we scale Y by -1 (or just M).
     // M includes sign. If M = -0.5, image is inverted and half size.
     // transform string: translate(x,y) scale(1, m)
     // Important: Snap.svg scale defaults to center. We MUST scale around (0,0) to keep base on axis.
-    els.imageArrow.transform(`t${imgX},${objY} s${Math.abs(phys.m)},${phys.m},0,0`); 
+    els.imageArrow.transform(`t${imgX},${objY} s${Math.abs(phys.m)},${phys.m},0,0`);
 
     // --- Draw Rays ---
     const objTopY = objY - objH;
@@ -220,7 +244,7 @@ function updateScene(u) {
         // Image is virtual (Left side).
         // Solid rays go to the RIGHT (diverging).
         // Dashed rays go to the LEFT (converging at image).
-        
+
         // Recalculate Solid Rays (They originate from source, pass lens, and go out)
         // Ray 1 Solid part: Obj -> Lens -> Focus' -> Out
         // It must align with the virtual image point.
@@ -228,7 +252,7 @@ function updateScene(u) {
         const slope1 = (CONFIG.centerY - objTopY) / CONFIG.f;
         const xEnd = 800;
         const yEnd1 = objTopY + slope1 * (xEnd - CONFIG.centerX);
-        
+
         els.rays.parallel.attr({
             path: `M${objX},${objTopY} L${CONFIG.centerX},${objTopY} L${xEnd},${yEnd1}`
         });
@@ -259,6 +283,9 @@ function updateScene(u) {
         els.rays.virtualCenter.attr({ path: "" });
     }
 }
+
+// 暴露到全局作用域，供HTML中的语言切换使用
+window.updateScene = updateScene;
 
 // Animation Loop
 let animId;

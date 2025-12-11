@@ -1,0 +1,47 @@
+{
+  "project": {
+    "name": "physics-demos-framework",
+    "type": "static-site",
+    "framework": "ejs"
+  },
+  "build": {
+    "command": "npm run build",
+    "output": "dist",
+    "clean": true
+  },
+  "dev": {
+    "command": "npm run dev",
+    "port": 8080,
+    "autoOpen": true
+  },
+  "lint": {
+    "css": {
+      "enabled": true,
+      "rules": ["no-important", "consistent-spacing", "valid-properties"]
+    },
+    "js": {
+      "enabled": true,
+      "rules": ["no-globals", "consistent-semicolons", "valid-syntax"]
+    },
+    "html": {
+      "enabled": true,
+      "rules": ["valid-structure", "semantic-tags", "alt-attributes"]
+    }
+  },
+  "templates": {
+    "directory": "templates",
+    "layout": "layout.ejs",
+    "partials": ["navigation.ejs", "breadcrumb.ejs", "footer.ejs"]
+  },
+  "demos": {
+    "directory": "demos",
+    "requiredFiles": ["demo.json", "demo.ejs", "demo.css", "demo.js"],
+    "namingConvention": "kebab-case"
+  },
+  "codeStyle": {
+    "indent": 2,
+    "quotes": "single",
+    "semicolons": true,
+    "trailingComma": "es5"
+  }
+}

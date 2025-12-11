@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- 基础SEO -->
+  <title><%= title %> - 物理演示网站</title>
+  <meta name="description" content="<%= description || '专业的物理现象交互式演示网站，提供力学、光学、电磁学等物理现象的直观展示和原理讲解。' %>">
+  <meta name="keywords" content="<%= keywords || '物理演示,物理实验,交互式学习,物理教学,科学教育' %>">
+  <meta name="author" content="物理演示网站">
+  
+  <!-- Open Graph 社交分享 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<%= title %> - 物理演示网站">
+  <meta property="og:description" content="<%= description || '专业的物理现象交互式演示网站' %>">
+  <meta property="og:url" content="<%= canonicalUrl || '/' %>">
+  <meta property="og:image" content="<%= ogImage || '/images/og-image.jpg' %>">
+  <meta property="og:site_name" content="物理演示网站">
+  <meta property="og:locale" content="zh_CN">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= title %> - 物理演示网站">
+  <meta name="twitter:description" content="<%= description || '专业的物理现象交互式演示网站' %>">
+  <meta name="twitter:image" content="<%= ogImage || '/images/twitter-image.jpg' %>">
+  
+  <!-- 其他SEO优化 -->
+  <link rel="canonical" href="<%= canonicalUrl || '/' %>">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <meta name="bingbot" content="index, follow">
+  
+  <!-- 网站图标 -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  
+  <!-- 样式表 -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="demo.css">
+  
+  <!-- 结构化数据 -->
+  <% if (structuredData) { %>
+  <script type="application/ld+json">
+  <%= JSON.stringify(structuredData) %>
+  </script>
+  <% } %>
+  
+  <!-- 外部脚本 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+
+</head>
+
+<body>
+  <button class="nav-toggle" id="navToggle" aria-label="切换导航栏">
+    <span class="nav-icon">☰</span>
+  </button>
+  
+  <div class="container">
+    <div class="sidebar">
+      <%- include('./navigation.ejs', {navigation: navigation}) %>
+    </div>
+    <div class="main-content">
+      <div class="header">
+        <%- include('./breadcrumb.ejs', {breadcrumb: breadcrumb}) %>
+      </div>
+      <div class="content">
+        <%- body %>
+      </div>
+      <div class="footer-wrapper">
+        <%- include('./footer.ejs') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  
+  <script src="demo.js"></script>
+  
+  <script>
+    // 导航栏切换功能
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.querySelector('.sidebar');
+      const navToggle = document.getElementById('navToggle');
+      const navIcon = document.querySelector('.nav-icon');
+      const overlay = document.getElementById('overlay');
+      const navLinks = document.querySelectorAll('.nav-list a');
+      
+      // 检查是否为移动设备
+      function isMobile() {
+        return window.innerWidth <= 768;
+      }
+      
+      // 初始化导航栏状态
+      if (isMobile()) {
+        sidebar.classList.add('hidden');
+      }
+      
+      // 切换导航栏显示/隐藏
+      function toggleSidebar() {
+        if (isMobile()) {
+          sidebar.classList.toggle('show');
+          overlay.classList.toggle('show');
+          navIcon.textContent = sidebar.classList.contains('show') ? '✕' : '☰';
+        } else {
+          sidebar.classList.toggle('hidden');
+          navIcon.textContent = sidebar.classList.contains('hidden') ? '☰' : '✕';
+        }
+      }
+      
+      // 添加事件监听器
+      navToggle.addEventListener('click', toggleSidebar);
+      overlay.addEventListener('click', toggleSidebar);
+      
+      // 点击导航链接时关闭导航栏（移动设备）
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          if (isMobile()) {
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+            navIcon.textContent = '☰';
+          }
+        });
+      });
+      
+      // 响应窗口大小变化
+      window.addEventListener('resize', function() {
+        if (!isMobile()) {
+          sidebar.classList.remove('show', 'hidden');
+          overlay.classList.remove('show');
+          navIcon.textContent = '☰';
+        } else {
+          sidebar.classList.add('hidden');
+          sidebar.classList.remove('show');
+          overlay.classList.remove('show');
+          navIcon.textContent = '☰';
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

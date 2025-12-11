@@ -1,0 +1,64 @@
+/* 空气-水折射演示特有样式 */
+
+.axis {
+    stroke: #95a5a6;
+    stroke-width: 2;
+    stroke-dasharray: 6,6;
+}
+
+.boundary {
+    stroke: #34495e;
+    stroke-width: 3;
+}
+
+.normal {
+    stroke: #3498db;
+    stroke-width: 1.5;
+    stroke-dasharray: 4,4;
+    opacity: 0.8;
+}
+
+.medium-label {
+    font-family: sans-serif;
+    font-size: 14px;
+    fill: #7f8c8d;
+    text-anchor: middle;
+}
+
+.ray-i {
+    stroke: #f1c40f;
+    stroke-width: 4;
+}
+
+.ray-r {
+    stroke: #e67e22;
+}
+
+.ray-t {
+    stroke: #2ecc71;
+}
+
+.arc-i {
+    stroke: #f1c40f;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+.arc-r {
+    stroke: #e67e22;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+.arc-t {
+    stroke: #2ecc71;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+.angle-label {
+    font-family: sans-serif;
+    font-size: 14px;
+    fill: #2c3e50;
+    text-anchor: middle;
+}

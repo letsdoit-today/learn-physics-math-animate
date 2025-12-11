@@ -1,0 +1,74 @@
+<main class="demo-container">
+    <h1>
+        <%= title %>
+    </h1>
+    <div class="demo-description">
+        <p>
+            <%= description %>
+        </p>
+    </div>
+
+    <div class="demo-content">
+        <div class="canvas-container">
+            <svg id="svg-canvas" viewBox="0 0 800 500"></svg>
+        </div>
+
+        <aside class="demo-controls">
+            <div class="control-group">
+                <h3 data-i18n="control-title">实验控制</h3>
+                <div class="buttons">
+                    <button id="btn-play" class="btn primary" data-i18n="btn-play">开始演示</button>
+                    <button id="btn-pause" class="btn secondary" data-i18n="btn-pause">暂停</button>
+                    <button id="btn-reset" class="btn warning" data-i18n="btn-reset">重置</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3 data-i18n="params-title">参数设置</h3>
+                <label for="slider-angle" id="slider-label">入射角 (°): <span id="val-angle">45</span></label>
+                <input type="range" id="slider-angle" min="0" max="60" value="45" step="0.5">
+            </div>
+
+            <div class="control-group">
+                <h3 data-i18n="data-title">实时数据</h3>
+                <div class="data-grid">
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-n1">介质1 n₁</span>
+                        <span class="value" id="data-n1">1.00</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-n2">介质2 n₂</span>
+                        <span class="value" id="data-n2">1.33</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-theta-i">入射角 θᵢ</span>
+                        <span class="value" id="data-theta-i">45.0°</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-theta-r">反射角 θʳ</span>
+                        <span class="value" id="data-theta-r">45.0°</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-theta-t">折射角 θᵗ</span>
+                        <span class="value" id="data-theta-t">33.0°</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-R">反射比 R</span>
+                        <span class="value" id="data-R">0.04</span>
+                    </div>
+                    <div class="data-item">
+                        <span class="label" data-i18n="label-T">透射比 T</span>
+                        <span class="value" id="data-T">0.96</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <div class="demo-explanation">
+        <h2>原理解释</h2>
+        <p>
+            <%= explanation %>
+        </p>
+    </div>
+</main>

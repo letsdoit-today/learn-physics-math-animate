@@ -1,0 +1,25 @@
+<nav class="navigation">
+  <div class="nav-header">
+    <h2>物理演示</h2>
+  </div>
+  <ul class="nav-list">
+    <% navigation.items.forEach(function(item) { %>
+      <li class="nav-item">
+        <a href="<%= item.url %>" class="nav-link <%= item.active ? 'active' : '' %>">
+          <%= item.title %>
+        </a>
+        <% if (item.subitems && item.subitems.length > 0) { %>
+          <ul class="sub-nav">
+            <% item.subitems.forEach(function(subitem) { %>
+              <li class="sub-nav-item">
+                <a href="<%= subitem.url %>" class="sub-nav-link <%= subitem.active ? 'active' : '' %>">
+                  <%= subitem.title %>
+                </a>
+              </li>
+            <% }); %>
+          </ul>
+        <% } %>
+      </li>
+    <% }); %>
+  </ul>
+</nav>

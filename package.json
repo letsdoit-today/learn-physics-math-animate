@@ -1,0 +1,32 @@
+{
+  "name": "physics-demos-framework",
+  "version": "1.0.0",
+  "description": "基于EJS模板引擎的物理演示网站框架",
+  "main": "scripts/build.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js && npx http-server public -p 8080 -o",
+    "install-deps": "npm install ejs http-server",
+    "check": "node scripts/project-check.js",
+    "lint": "npm run check",
+    "prebuild": "npm run check"
+  },
+  "keywords": [
+    "physics",
+    "demonstration",
+    "ejs",
+    "static-site"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.8"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "html-minifier": "^4.0.0",
+    "csso": "^5.0.5",
+    "uglify-js": "^3.17.4",
+    "sitemap-generator": "^8.1.0"
+  }
+}

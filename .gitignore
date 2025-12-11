@@ -1,0 +1,10 @@
+min/
+node_modules/
+scripts.md
+subtitles.srt
+dist/
+public/electromagnetism/
+public/optics/
+public/mechanics/
+public/thermodynamics/
+public/index.html
