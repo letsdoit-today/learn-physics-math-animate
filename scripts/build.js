@@ -360,37 +360,14 @@ function build() {
     // 复制静态资源
     copyStaticAssets();
 
+    // copy sitemap.xml to dist directory
+    fs.copyFileSync(path.join(rootDir, 'sitemap.xml'), path.join(rootDir, 'dist', 'sitemap.xml'));
+    
     // minify html, css, js files in dist directory
     minifyFilesInDir(path.join(rootDir, 'dist'));
-
-    // 生成 sitemap.xml
-    generateSitemap();
-
+    
     console.log('Build completed successfully!');
 }
-
-function generateSitemap() { 
-    const sitemap = new SitemapGenerator(config.siteUrl, {
-        stripQuerystring: true,
-        lastMod: true,
-        priority: true,
-        changeFreq: true,
-        ignoreLastMod: true,
-        ignoreImages: true,
-        ignoreVideos: true,
-        ignoreAudio: true,
-        ignoreOther: true,
-        ignoreCanonical: true,
-        ignoreSitemap: true,
-        ignoreRobots: true,
-    });
-    sitemap.start();
-    sitemap.on('done', () => {
-        fs.writeFileSync(path.join(rootDir, 'dist', 'sitemap.xml'), sitemap.toString());
-        console.log('Sitemap generated: dist/sitemap.xml');
-    });
-}
-
 
 function minifyFilesInDir(dirPath) {
     const files = fs.readdirSync(dirPath);
